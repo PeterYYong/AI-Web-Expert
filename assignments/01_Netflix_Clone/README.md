@@ -1,6 +1,9 @@
 Netflix 스타일 영화 갤러리
 실제 Netflix UI를 모방한 반응형 영화 갤러리 웹페이지입니다.
-./img/demo.jpg
+
+![image](https://github.com/user-attachments/assets/8709bfdc-43db-424c-8ce1-707f3a7a8353)
+
+
 
 🚀 실행 방법
 
