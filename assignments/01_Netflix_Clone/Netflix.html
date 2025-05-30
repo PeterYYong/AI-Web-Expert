@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix</title>
+    <style>
+        :root {
+            --primary-color: #e50914;
+            --dark-color: #141414;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: #141414;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 60px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.7) 10%, transparent);
+            z-index: 1000;
+            transition: background 0.3s ease;
+        }
+
+        .header.scrolled {
+            background: #141414;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .netflix-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #b3b3b3;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), 
+                        url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi9qjJkjTy5PgT5lzTh1RHTgA-cztBK6CtWdB9JzEvFGNcEFyhLZZDzX-97yZ5tf6U17bNb9QqX_sT_IXVF4c1LDFbGIFQWtFnujaGxn8txKEyYa3q0eusbHg7txYZe_LrjLPKczWPm2Co1/w919/money-heist-costume-dali-mask-uhdpaper.com-4K-6.1112-wp.thumbnail.jpg') center/cover;
+            display: flex;
+            align-items: center;
+            padding: 0 60px;
+        }
+
+        .hero-content {
+            max-width: 500px;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 60px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        .hero-description {
+            font-size: 18px;
+            line-height: 1.3;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-play {
+            background: #fff;
+            color: #000;
+        }
+
+        .btn-play:hover {
+            background: rgba(255,255,255,0.8);
+        }
+
+        .btn-info {
+            background: rgba(109,109,110,0.7);
+            color: #fff;
+        }
+
+        .btn-info:hover {
+            background: rgba(109,109,110,0.4);
+        }
+
+        /* Content Sections */
+        .content {
+            padding: 0 60px;
+            margin-top: -100px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #e5e5e5;
+        }
+
+        .movie-row {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 15px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .movie-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .movie-card {
+            min-width: 200px;
+            height: 300px;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .movie-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .movie-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            padding: 20px 15px 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .movie-card:hover .movie-overlay {
+            transform: translateY(0);
+        }
+
+        .movie-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .movie-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #b3b3b3;
+        }
+
+        .rating {
+            color: #46d369;
+        }
+
+        /* Netflix Originals Row */
+        .netflix-originals .movie-card {
+            min-width: 200px;
+            height: 300px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 0 20px;
+                height: 70vh;
+            }
+
+            .hero-title {
+                font-size: 40px;
+            }
+
+            .hero-description {
+                font-size: 16px;
+            }
+
+            .content {
+                padding: 0 20px;
+                margin-top: -50px;
+            }
+
+            .movie-card {
+                min-width: 120px;
+                height: 180px;
+            }
+
+            .netflix-originals .movie-card {
+                min-width: 100px;
+                height: 150px;
+            }
+        }
+
+        /* Icons */
+        .play-icon::before {
+            content: "▶";
+        }
+
+        .info-icon::before {
+            content: "ℹ";
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav">
+            <div class="netflix-logo">NETFLIX</div>
+            <ul class="nav-links">
+                <li><a href="#home">홈</a></li>
+                <li><a href="#series">시리즈</a></li>
+                <li><a href="#movies">영화</a></li>
+                <li><a href="#originals">NEW! 요즘 대세 콘텐츠</a></li>
+                <li><a href="#mylist">내가 찜한 콘텐츠</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Money Heist</h1>
+            <p class="hero-description">
+                역사상 가장 큰 강도 사건을 벌이기 위해 수수께끼의 남자가 8명의 독특한 강도들을 모집한다. 그들의 목표는 단순한 돈이 아니다.
+            </p>
+            <div class="hero-buttons">
+                <button class="btn btn-play">
+                    <span class="play-icon"></span>
+                    재생
+                </button>
+                <button class="btn btn-info">
+                    <span class="info-icon"></span>
+                    상세 정보
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Sections -->
+    <main class="content">
+        <!-- Netflix Originals -->
+        <section class="section netflix-originals">
+            <h2 class="section-title">NETFLIX ORIGINALS</h2>
+            <div class="movie-row">
+                <div class="movie-card">
+                    <img src="https://www.themoviedb.org/t/p/original/qR0uCwC6umvJUcmvNsSz2FruGXp.jpg" alt="Luis Miguel">
+                    <div class="movie-overlay">
+                        <div class="movie-title">Luis Miguel</div>
+                        <div class="movie-meta">
+                            <span>2018</span>
+                            <span class="rating">97% 일치</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://media.themoviedb.org/t/p/w600_and_h900_bestv2/ekZobS8isE6mA53RAiGDG93hBxL.jpg" alt="Lucifer">
+                    <div class="movie-overlay">
+                        <div class="movie-title">Lucifer</div>
+                        <div class="movie-meta">
+                            <span>2016</span>
+                            <span class="rating">98% 일치</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="data:image/jpeg;base64,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" alt="Haunted">
+                    <div class="movie-overlay">
+                        <div class="movie-title">Haunted</div>
+                        <div class="movie-meta">
+                            <span>2018</span>
+                            <span class="rating">85% 일치</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://images.squarespace-cdn.com/content/v1/50c10ff1e4b0c562855be559/1470154148925-VBFCTG9QPM2XLR7I6RP8/LazMarquez_StrangerThings_Blog" alt="Stranger Things">
+                    <div class="movie-overlay">
+                        <div class="movie-title">Stranger Things</div>
+                        <div class="movie-meta">
+                            <span>2021</span>
+                            <span class="rating">98% 일치</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="movie-card">
+                    <img src="https://image.tmdb.org/t/p/w300/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg" alt="Squid Game">
+                    <div class="movie-overlay">
+                        <div class="movie-title">Squid Game</div>
+                        <div class="movie-meta">
+                            <span>2013</span>
+                            <span class="rating">92% 일치</span>
+                        </div>
+                    </div>
+                </div>
+                                <div class="movie-card">
+                    <img src="https://www.tallengestore.com/cdn/shop/products/Poster_-_Orange_Is_The_New_Black_-_Cast_-_TV_Show_Collection_d405d89d-4a84-4ca1-8e14-ad70862cef41.jpg?v=1569413819" alt="Orange Is the New Black">
+                    <div class="movie-overlay">
+                        <div class="movie-title">Orange Is the New Black</div>
+                        <div class="movie-meta">
+                            <span>2013</span>
+                            <span class="rating">92% 일치</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://m.media-amazon.com/images/M/MV5BMTQ4MDczNDYwNV5BMl5BanBnXkFtZTcwNjMwMDk5OA@@._V1_.jpg" alt="House of Cards">
+                    <div class="movie-overlay">
+                        <div class="movie-title">House of Cards</div>
+                        <div class="movie-meta">
+                            <span>2013</span>
+                            <span class="rating">89% 일치</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://static1.colliderimages.com/wordpress/wp-content/uploads/2022/05/EN-US_UmbrellaAcad_S3_Main_Vertical_4x5_RGB_PRE.jpg" alt="The Umbrella Academy">
+                    <div class="movie-overlay">
+                        <div class="movie-title">The Umbrella Academy</div>
+                        <div class="movie-meta">
+                            <span>2019</span>
+                            <span class="rating">94% 일치</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trending Now -->
+        <section class="section">
+            <h2 class="section-title">Trending Now</h2>
+            <div class="movie-row">
+                <div class="movie-card">
+                    <img src="https://i.ebayimg.com/images/g/8sIAAOSwuoZklifh/s-l1200.jpg" alt="Barbie">
+                    <div class="movie-overlay">
+                        <div class="movie-title">Barbie</div>
+                        <div class="movie-meta">
+                            <span>2023</span>
+                            <span class="rating">94% 일치</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Oppenheimer">
+                    <div class="movie-overlay">
+                        <div class="movie-title">Oppenheimer</div>
+                        <div class="movie-meta">
+                            <span>2023</span>
+                            <span class="rating">96% 일치</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://m.media-amazon.com/images/M/MV5BMmU5NGJlMzAtMGNmOC00YjJjLTgyMzUtNjAyYmE4Njg5YWMyXkEyXkFqcGc@._V1_.jpg" alt="The Batman">
+                    <div class="movie-overlay">
+                        <div class="movie-title">The Batman</div>
+                        <div class="movie-meta">
+                            <span>2022</span>
+                            <span class="rating">92% 일치</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg" alt="Inception">
+                    <div class="movie-overlay">
+                        <div class="movie-title">Inception</div>
+                        <div class="movie-meta">
+                            <span>2010</span>
+                            <span class="rating">98% 일치</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg" alt="Interstellar">
+                    <div class="movie-overlay">
+                        <div class="movie-title">Interstellar</div>
+                        <div class="movie-meta">
+                            <span>2014</span>
+                            <span class="rating">95% 일치</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://www.themoviedb.org/t/p/original/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg" alt="Parasite">
+                    <div class="movie-overlay">
+                        <div class="movie-title">Parasite</div>
+                        <div class="movie-meta">
+                            <span>2019</span>
+                            <span class="rating">99% 일치</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" alt="The Shawshank Redemption">
+                    <div class="movie-overlay">
+                        <div class="movie-title">The Shawshank Redemption</div>
+                        <div class="movie-meta">
+                            <span>1994</span>
+                            <span class="rating">98% 일치</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Movie card click events
+        document.querySelectorAll('.movie-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const title = this.querySelector('.movie-title').textContent;
+                console.log(`${title} 클릭됨`);
+            });
+        });
+
+        // Hero buttons
+        document.querySelector('.btn-play').addEventListener('click', () => {
+            alert('재생 기능이 실행됩니다.');
+        });
+
+        document.querySelector('.btn-info').addEventListener('click', () => {
+            alert('상세 정보 페이지로 이동합니다.');
+        });
+
+        // Smooth horizontal scrolling for movie rows
+        document.querySelectorAll('.movie-row').forEach(row => {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            row.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - row.offsetLeft;
+                scrollLeft = row.scrollLeft;
+            });
+
+            row.addEventListener('mouseleave', () => {
+                isDown = false;
+            });
+
+            row.addEventListener('mouseup', () => {
+                isDown = false;
+            });
+
+            row.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - row.offsetLeft;
+                const walk = (x - startX) * 2;
+                row.scrollLeft = scrollLeft - walk;
+            });
+        });
+    </script>
+</body>
+</html>
