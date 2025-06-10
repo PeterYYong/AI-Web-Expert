@@ -26,9 +26,9 @@
 
 1. 저장소를 클론하세요:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/todo-app.git
+   git clone https://github.com/PeterYYong/AI-Web-Expert/edit/main/assignments/02_Todo_App.git
 
 프로젝트 폴더로 이동:
-bashcd todo-app
+cd todo-app
 
 index.html 파일을 브라우저에서 열어주세요.
