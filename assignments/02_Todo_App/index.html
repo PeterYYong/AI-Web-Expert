@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todos 앱</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="app-title">Todos 앱</h1>
+            <button class="add-btn" onclick="todoApp.showAddModal()">새로운 TODO 추가하기</button>
+        </div>
+
+        <div class="todo-list" id="todoList">
+            <!-- Todo items will be inserted here -->
+        </div>
+    </div>
+
+    <!-- 할 일 추가 모달 (추가할 때만 사용) -->
+    <div class="input-modal" id="inputModal">
+        <div class="modal-content">
+            <h3 class="modal-title">새로운 할 일 추가</h3>
+            <input type="text" class="modal-input" id="modalInput" placeholder="할 일을 입력하세요..." maxlength="100">
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="todoApp.hideModal()">취소</button>
+                <button class="modal-btn confirm" onclick="todoApp.confirmModal()">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
