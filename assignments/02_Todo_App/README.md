@@ -26,7 +26,7 @@
 
 1. 저장소를 클론하세요:
    ```bash
-   git clone https://github.com/PeterYYong/AI-Web-Expert/edit/main/assignments/02_Todo_App.git
+   git clone https://github.com/PeterYYong/AI-Web-Expert.git
 
 프로젝트 폴더로 이동:
 cd todo-app
